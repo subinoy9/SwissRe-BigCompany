@@ -1,6 +1,6 @@
-package org.bigcompany.util;
+package com.org.analyser.swissre.lib;
 
-import org.bigcompany.model.Employee;
+import com.org.analyser.swissre.model.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;

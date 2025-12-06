@@ -1,16 +1,20 @@
-package org.bigcompany.controller;
+package com.org.analyser.swissre.controller;
 
-import org.bigcompany.util.CsvReader;
-import org.bigcompany.model.Employee;
-import org.bigcompany.service.OrgAnalyzerService;
+import com.org.analyser.swissre.lib.CsvReader;
+import com.org.analyser.swissre.model.Employee;
+
+import com.org.analyser.swissre.calculators.UnderpaidManagerAnalyzer;
+import com.org.analyser.swissre.calculators.OverpaidManagerAnalyzer;
+import com.org.analyser.swissre.calculators.ReportingLineAnalyzer;
+import com.org.analyser.swissre.calculators.SubordinateSalaryCalculator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
-
-import java.nio.file.NoSuchFileException;
-import java.io.FileNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,43 +24,57 @@ public class OrgStructureController {
 
     private static final Logger log = LoggerFactory.getLogger(OrgStructureController.class);
 
-    private OrgAnalyzerService orgService;
     private final CsvReader csvReader;
+
+    private List<Employee> employees;
+
+    // analyzers
+    private SubordinateSalaryCalculator salaryCalc;
+    private UnderpaidManagerAnalyzer underpaidAnalyzer;
+    private OverpaidManagerAnalyzer overpaidAnalyzer;
+    private ReportingLineAnalyzer reportingAnalyzer;
 
     public OrgStructureController(CsvReader csvReader) {
         this.csvReader = csvReader;
     }
 
-    private OrgAnalyzerService initializeDefaultService() throws NoSuchFileException {
-        try {
-            List<Employee> employees = csvReader.read(null); // internally loads default file
-            return new OrgAnalyzerService(employees);
-        } catch (Exception e) {
-            log.error("Failed to load default CSV", e);
-            throw new NoSuchFileException("Default CSV loading failed: " + e.getMessage());
-        }
+    private void initializeAnalyzers(List<Employee> employees) {
+        this.employees = employees;
+
+        salaryCalc = new SubordinateSalaryCalculator();
+
+        underpaidAnalyzer = new UnderpaidManagerAnalyzer(salaryCalc);
+        overpaidAnalyzer = new OverpaidManagerAnalyzer(salaryCalc);
+        reportingAnalyzer = new ReportingLineAnalyzer();
     }
+
+    // ---------------------------------------
+    //             IMPORT CSV
+    // ---------------------------------------
 
     @PostMapping("/import")
     public Map<String, Object> importCsv(@RequestParam(required = false) String file) {
+
         try {
             String msg;
 
-            if (file == null || file.isBlank()) {
-                this.orgService = initializeDefaultService();
-                msg = "Default CSV loaded successfully.";
-            } else {
-                List<Employee> employees = csvReader.read(file);
-                this.orgService = new OrgAnalyzerService(employees);
-                msg = "CSV loaded from path: " + file;
-            }
+            List<Employee> employeesLoaded =
+                    (file == null || file.isBlank())
+                            ? csvReader.read(null)
+                            : csvReader.read(file);
 
-            logAnalysisResults(orgService);
+            initializeAnalyzers(employeesLoaded);
+
+            msg = (file == null || file.isBlank())
+                    ? "Default CSV loaded successfully."
+                    : "CSV loaded from path: " + file;
+
+            logAnalysisResults();
+
             return Map.of("status", msg);
 
         } catch (Exception ex) {
 
-            // Detect File Not Found
             if (ex instanceof FileNotFoundException ||
                     (ex.getMessage() != null && ex.getMessage().toLowerCase().contains("not found"))) {
                 throw new ResponseStatusException(
@@ -73,25 +91,33 @@ public class OrgStructureController {
         }
     }
 
+    // ---------------------------------------
+    //            INTERNAL LOGGING
+    // ---------------------------------------
 
+    private void logAnalysisResults() {
 
-    private void logAnalysisResults(OrgAnalyzerService svc) {
         log.info("--- UNDERPAID MANAGERS ---");
-        Map<String, ?> underpaid = svc.managersUnderpaid();
+        var underpaid = underpaidAnalyzer.findUnderpaidManagers(employees);
         log.info(underpaid.isEmpty() ? "No underpaid managers" : underpaid.toString());
 
         log.info("--- OVERPAID MANAGERS ---");
-        Map<String, ?> overpaid = svc.managersOverpaid();
+        var overpaid = overpaidAnalyzer.findOverpaidManagers(employees);
         log.info(overpaid.isEmpty() ? "No overpaid managers" : overpaid.toString());
 
         log.info("--- LONG REPORTING LINES (>4) ---");
-        Map<String, ?> longLines = svc.employeesWithTooLongReportingLines();
+        var longLines = reportingAnalyzer.findEmployeesWithLongReportingLines(employees);
         log.info(longLines.isEmpty() ? "No long reporting lines" : longLines.toString());
     }
 
+    // ---------------------------------------
+    //               ENDPOINTS
+    // ---------------------------------------
+
     @GetMapping("/managers/underpaid")
     public Map<String, Object> getUnderpaidManagers() {
-        var underpaid = orgService.managersUnderpaid();
+
+        var underpaid = underpaidAnalyzer.findUnderpaidManagers(employees);
 
         var result = underpaid.entrySet().stream()
                 .map(e -> Map.of(
@@ -105,7 +131,8 @@ public class OrgStructureController {
 
     @GetMapping("/managers/overpaid")
     public Map<String, Object> getOverpaidManagers() {
-        var overpaid = orgService.managersOverpaid();
+
+        var overpaid = overpaidAnalyzer.findOverpaidManagers(employees);
 
         var result = overpaid.entrySet().stream()
                 .map(e -> Map.of(
@@ -119,7 +146,8 @@ public class OrgStructureController {
 
     @GetMapping("/employees/long-reporting-lines")
     public Map<String, Object> fetchLongReportingLines() {
-        Map<String, Integer> tooLong = orgService.employeesWithTooLongReportingLines();
+
+        var tooLong = reportingAnalyzer.findEmployeesWithLongReportingLines(employees);
 
         var result = tooLong.entrySet().stream()
                 .map(e -> Map.of(

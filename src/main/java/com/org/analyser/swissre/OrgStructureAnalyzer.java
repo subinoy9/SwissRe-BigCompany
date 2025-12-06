@@ -1,4 +1,4 @@
-package org.bigcompany;
+package com.org.analyser.swissre;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

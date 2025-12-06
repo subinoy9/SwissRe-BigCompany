@@ -1,4 +1,4 @@
-package org.bigcompany.model;
+package com.org.analyser.swissre.model;
 
 import java.math.BigDecimal;
 

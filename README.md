@@ -44,7 +44,7 @@ mvn spring-boot:run
 
 ## API Endpoints
 - **POST** `http://localhost:8080/api/import`  
-  If no request body is provided, the service automatically loads the default `employees.csv[employees.csv](src/main/resources/employees.csv)`.
+  If no request body is provided, the service automatically loads the default [employees.csv](src/main/resources/employees.csv).
 ![Screenshot 2025-12-07 at 1.47.40 AM.png](src/main/resources/images/Screenshot%202025-12-07%20at%201.47.40%E2%80%AFAM.png)
 - `GET http://localhost:8080/api/managers/underpaid`
 - `GET http://localhost:8080/api/managers/overpaid`
@@ -53,4 +53,4 @@ mvn spring-boot:run
 ### Swagger Documentation
 Open the live API documentation here:
 
-👉 **Swagger yml:** [swagger.yml](src/main/resources/swagger/swagger.yml)http://localhost:8080/swagger-ui.html
+👉 **Swagger yml:** [swagger.yml](src/main/resources/swagger/swagger.yml)

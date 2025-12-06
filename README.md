@@ -42,17 +42,17 @@ Spring Boot will automatically:
 - Load the CSV file and print the report to console when you call the POST /api/import API (either default CSV or a client-provided path).
 
 ## API Endpoints
-- POST http://localhost:8080/api/import?file=&lt;path-to-csv-file&gt;
-- GET http://localhost:8080/api/managers/underpaid
-- GET http://localhost:8080/api/managers/overpaid
-- GET http://localhost:8080/api/employees/reporting-lines
+- `POST http://localhost:8080/api/import?file=<path-to-csv-file>`
+- `GET http://localhost:8080/api/managers/underpaid`
+- `GET http://localhost:8080/api/managers/overpaid`
+- `GET http://localhost:8080/api/employees/reporting-lines`
 
 
 ### Example Input
 
 1. Default CSV - [employees.csv](src/main/resources/employees.csv)
 2. Provide path using API:
-   POST http://localhost:8080/api/import?file=&lt;path-to-csv-file&gt;
+   `POST http://localhost:8080/api/import?file=<path-to-csv-file>`
 ![Screenshot 2025-12-06 at 10.06.23 PM.png](src/main/resources/images/Screenshot%202025-12-06%20at%2010.06.23%E2%80%AFPM.png)
 
 ### Example Output

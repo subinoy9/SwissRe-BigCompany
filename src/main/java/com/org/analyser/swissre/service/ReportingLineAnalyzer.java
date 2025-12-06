@@ -29,7 +29,7 @@ public class ReportingLineAnalyzer {
                 managerId = empMap.get(managerId).getManagerId();
 
                 if (depth > 4) {
-                    longReportingLines.put(emp.getId(), depth);
+                    longReportingLines.put(emp.getId(), depth-4);
                     break;
                 }
             }

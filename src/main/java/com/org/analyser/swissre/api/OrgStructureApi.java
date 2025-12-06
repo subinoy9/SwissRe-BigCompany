@@ -155,7 +155,7 @@ public class OrgStructureApi {
         var result = tooLong.entrySet().stream()
                 .map(e -> Map.of(
                         "employeeId", e.getKey(),
-                        "reportingLineLength", e.getValue()
+                        "exceedsBy", e.getValue()
                 ))
                 .toList();
 

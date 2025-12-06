@@ -1,12 +1,13 @@
-package com.org.analyser.swissre.controller;
+package com.org.analyser.swissre.api;
 
 import com.org.analyser.swissre.lib.CsvReader;
 import com.org.analyser.swissre.model.Employee;
 
-import com.org.analyser.swissre.calculators.UnderpaidManagerAnalyzer;
-import com.org.analyser.swissre.calculators.OverpaidManagerAnalyzer;
-import com.org.analyser.swissre.calculators.ReportingLineAnalyzer;
-import com.org.analyser.swissre.calculators.SubordinateSalaryCalculator;
+import com.org.analyser.swissre.service.UnderpaidManagerAnalyzer;
+import com.org.analyser.swissre.service.OverpaidManagerAnalyzer;
+import com.org.analyser.swissre.service.ReportingLineAnalyzer;
+import com.org.analyser.swissre.service.SubordinateSalaryCalculator;
+import com.org.analyser.swissre.dto.FilePathRequestDto;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +21,9 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-public class OrgStructureController {
+public class OrgStructureApi {
 
-    private static final Logger log = LoggerFactory.getLogger(OrgStructureController.class);
+    private static final Logger log = LoggerFactory.getLogger(OrgStructureApi.class);
 
     private final CsvReader csvReader;
 
@@ -34,7 +35,7 @@ public class OrgStructureController {
     private OverpaidManagerAnalyzer overpaidAnalyzer;
     private ReportingLineAnalyzer reportingAnalyzer;
 
-    public OrgStructureController(CsvReader csvReader) {
+    public OrgStructureApi(CsvReader csvReader) {
         this.csvReader = csvReader;
     }
 
@@ -53,10 +54,12 @@ public class OrgStructureController {
     // ---------------------------------------
 
     @PostMapping("/import")
-    public Map<String, Object> importCsv(@RequestParam(required = false) String file) {
+    public Map<String, Object> importCsv(@RequestBody(required = false) FilePathRequestDto request) {
 
         try {
             String msg;
+
+            String file = (request != null) ? request.getPath() : null;
 
             List<Employee> employeesLoaded =
                     (file == null || file.isBlank())
@@ -79,7 +82,7 @@ public class OrgStructureController {
                     (ex.getMessage() != null && ex.getMessage().toLowerCase().contains("not found"))) {
                 throw new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "CSV file not found at path: " + file
+                        "CSV file not found at path: " + ((request != null) ? request.getPath() : null)
                 );
             }
 

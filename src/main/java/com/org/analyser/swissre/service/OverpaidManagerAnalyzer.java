@@ -1,4 +1,4 @@
-package com.org.analyser.swissre.calculators;
+package com.org.analyser.swissre.service;
 
 import com.org.analyser.swissre.model.Employee;
 import org.slf4j.Logger;

@@ -50,11 +50,10 @@ Spring Boot will automatically:
 
 ### Example Input
 
-1. Default CSV - [employees.csv](https://github.com/yamininidhiraj/SwissRe-BigCompany-OrgStructureAnalyzer/blob/main/src/main/resources/employees.csv)
+1. Default CSV - [employees.csv](src/main/resources/employees.csv)
 2. Provide path using API: 
 POST http://localhost:8080/api/import?file=<path-to-csv-file>
-
-![path-to-csv.png](src/main/resources/images/post-path-to-csv.png)
+![Screenshot 2025-12-06 at 10.06.23 PM.png](src/main/resources/images/Screenshot%202025-12-06%20at%2010.06.23%E2%80%AFPM.png)
 
 ### Example Output
 
@@ -62,9 +61,10 @@ POST http://localhost:8080/api/import?file=<path-to-csv-file>
 2. Output exposed through APIs 
 
 GET http://localhost:8080/api/managers/underpaid
-![get-underpaid.png](src/main/resources/images/get-underpaid.png)
-GET http://localhost:8080/api/managers/overpaid
-![get-overpaid.png](src/main/resources/images/get-overpaid.png)
-GET http://localhost:8080/api/employees/reporting-lines
-![get-long-reporting-lines.png](src/main/resources/images/get-long-reporting-lines.png)
+![Screenshot 2025-12-06 at 10.08.01 PM.png](src/main/resources/images/Screenshot%202025-12-06%20at%2010.08.01%E2%80%AFPM.png)
 
+GET http://localhost:8080/api/managers/overpaid
+![Screenshot 2025-12-06 at 10.08.15 PM.png](src/main/resources/images/Screenshot%202025-12-06%20at%2010.08.15%E2%80%AFPM.png)
+
+GET http://localhost:8080/api/employees/reporting-lines
+![Screenshot 2025-12-06 at 10.09.10 PM.png](src/main/resources/images/Screenshot%202025-12-06%20at%2010.09.10%E2%80%AFPM.png)

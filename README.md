@@ -1,22 +1,22 @@
 # Org Structure Analyzer Service
 
-This project analyzes the organizational structure of a large company using employee information stored in a CSV file. 
+A lightweight Java-based microservice that analyzes the organizational structure of a company (provided via CSV). It helps identify managers whose compensation may not align with that of their teams — and also detects overly deep reporting hierarchies.
 
-It identifies:
+## What it does
 
-- Underpaid managers (earning <20% above avg subordinate salary)
+- Underpaid Managers — Managers earning less than 20% above the average salary of their direct/subordinate employees
 
-- Overpaid managers (earning >50% above avg subordinate salary)
+- Overpaid Managers — Managers earning more than 50% above the average salary of their direct/subordinates
 
-- Employees with reporting lines deeper than 4 levels
+- Deep Reporting Lines — Employees whose chain of command exceeds 4 levels
 
-The application exposes REST APIs.
+- The service is exposed via RESTful APIs for easy integration or automation.
 
-## Requirements
+## Prerequisites
 
-- Java 17
+- Java 21
 
-- Maven 3.9.11
+- Apache Maven 3.9.11
 
 - Spring Boot 3.1.4
 
@@ -31,40 +31,26 @@ Run Service
 ```
 mvn spring-boot:run
 ```
-Spring Boot will automatically:
 
-- Start an embedded Tomcat server.
+### Once started, the service will:
 
-- Initialize Spring Boot beans including OrgStructureController and CsvReader.
+- Launch an embedded Tomcat server
 
-- Expose REST APIs (POST /api/import, GET /api/managers/underpaid, GET /api/managers/overpaid, GET /api/employees/reporting-lines).
+- Initialize all required Spring beans (e.g. controller, CSV-reader component)
 
-- Load the CSV file and print the report to console when you call the POST /api/import API (either default CSV or a client-provided path).
+- Provide REST endpoints as described below
+
+- Accept CSV input either from a default file or a client-provided path
 
 ## API Endpoints
-- `POST http://localhost:8080/api/import?file=<path-to-csv-file>`
+- **POST** `http://localhost:8080/api/import`  
+  If no request body is provided, the service automatically loads the default `employees.csv[employees.csv](src/main/resources/employees.csv)`.
+![Screenshot 2025-12-07 at 1.47.40 AM.png](src/main/resources/images/Screenshot%202025-12-07%20at%201.47.40%E2%80%AFAM.png)
 - `GET http://localhost:8080/api/managers/underpaid`
 - `GET http://localhost:8080/api/managers/overpaid`
 - `GET http://localhost:8080/api/employees/reporting-lines`
 
+### Swagger Documentation
+Open the live API documentation here:
 
-### Example Input
-
-1. Default CSV - [employees.csv](src/main/resources/employees.csv)
-2. Provide path using API:
-   `POST http://localhost:8080/api/import?file=<path-to-csv-file>`
-![Screenshot 2025-12-06 at 10.06.23 PM.png](src/main/resources/images/Screenshot%202025-12-06%20at%2010.06.23%E2%80%AFPM.png)
-
-### Example Output
-
-1. Output printed in console
-2. Output exposed through APIs 
-
-GET http://localhost:8080/api/managers/underpaid
-![Screenshot 2025-12-06 at 10.08.01 PM.png](src/main/resources/images/Screenshot%202025-12-06%20at%2010.08.01%E2%80%AFPM.png)
-
-GET http://localhost:8080/api/managers/overpaid
-![Screenshot 2025-12-06 at 10.08.15 PM.png](src/main/resources/images/Screenshot%202025-12-06%20at%2010.08.15%E2%80%AFPM.png)
-
-GET http://localhost:8080/api/employees/reporting-lines
-![Screenshot 2025-12-06 at 10.09.10 PM.png](src/main/resources/images/Screenshot%202025-12-06%20at%2010.09.10%E2%80%AFPM.png)
+👉 **Swagger yml:** [swagger.yml](src/main/resources/swagger/swagger.yml)http://localhost:8080/swagger-ui.html

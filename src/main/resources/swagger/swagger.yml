@@ -1,0 +1,106 @@
+openapi: 3.0.0
+info:
+  title: Org Structure Analyzer API
+  version: 1.0.0
+  description: API for analyzing organizational structure using employee CSV data.
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+
+  /api/import:
+    post:
+      summary: Import and analyze the CSV file
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                path:
+                  type: string
+                  example: "/Users/subinoymukherjee/Desktop/Repos/employee2.csv"
+      responses:
+        '200':
+          description: CSV loaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "CSV loaded from path: /Users/subinoymukherjee/Desktop/Repos/employee2.csv"
+
+  /api/managers/underpaid:
+    get:
+      summary: List managers who are underpaid
+      responses:
+        '200':
+          description: Underpaid managers retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  underpaidManagers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        employeeId:
+                          type: string
+                          example: "101"
+                        underpaidBy:
+                          type: number
+                          format: double
+                          example: 27999.996
+
+  /api/managers/overpaid:
+    get:
+      summary: List managers who are overpaid
+      responses:
+        '200':
+          description: Overpaid managers retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  overpaidManagers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        employeeId:
+                          type: string
+                          example: "100"
+                        overpaidBy:
+                          type: number
+                          format: double
+                          example: 15000.000
+
+  /api/employees/long-reporting-lines:
+    get:
+      summary: Get employees whose reporting line exceeds allowed depth
+      responses:
+        '200':
+          description: Reporting line results retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  longReportingLines:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        employeeId:
+                          type: string
+                          example: "105"
+                        exceedsBy:
+                          type: integer
+                          example: 1

@@ -82,7 +82,7 @@ paths:
                           format: double
                           example: 15000.000
 
-  /api/employees/long-reporting-lines:
+  /api/employees/reporting-lines:
     get:
       summary: Get employees whose reporting line exceeds allowed depth
       responses:

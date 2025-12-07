@@ -1,4 +1,4 @@
-# Org Structure Analyzer Service
+# Hierarchy Analysis Service
 
 A lightweight Java-based microservice that analyzes the organizational structure of a company (provided via CSV). It helps identify managers whose compensation may not align with that of their teams — and also detects overly deep reporting hierarchies.
 
@@ -10,7 +10,7 @@ A lightweight Java-based microservice that analyzes the organizational structure
 
 - Deep Reporting Lines — Employees whose chain of command exceeds 4 levels
 
-- The service is exposed via RESTful APIs for easy integration or automation.
+- The service is exposed via REST-ful APIs for easy integration or automation.
 
 ## Prerequisites
 
@@ -54,3 +54,11 @@ mvn spring-boot:run
 Open the live API documentation here:
 
 👉 **Swagger yml:** [swagger.yml](src/main/resources/swagger/swagger.yml)
+
+### Key Assumptions
+
+- The CSV file has the format: employeeId, firstName, lastName, salary, managerId, and managerId may be empty for the CEO.
+
+- Exactly one CEO exists (the only employee with no manager).
+
+- Invalid or incomplete CSV rows are skipped, and missing manager references are treated as “orphan” but not counted as long reporting lines.

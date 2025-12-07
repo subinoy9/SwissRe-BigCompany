@@ -38,8 +38,8 @@ class ReportingLineAnalyzerTest {
         Map<String, Integer> result = analyzer.findEmployeesWithLongReportingLines(employees);
 
         assertNotNull(result);
-        assertTrue(result.containsKey("105")); // Depth 5 → 1 over
-        assertTrue(result.containsKey("106")); // Depth 6 → 2 over
+        assertTrue(result.containsKey("105"));
+        assertTrue(result.containsKey("106"));
 
         assertEquals(1, result.get("105"));
         assertEquals(1, result.get("106"));

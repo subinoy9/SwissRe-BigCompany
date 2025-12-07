@@ -36,28 +36,20 @@ public class SubordinateSalaryCalculatorTest {
 
         assertNotNull(avgMap);
 
-        // Manager 100 has 1 direct subordinate: 101 → avg = 90000
         assertEquals(new BigDecimal("90000.00"), avgMap.get("100"));
 
-        // Manager 101 has 3 direct subordinates: 102, 200, 201 → avg = (85000 + 60000 + 150000)/3 = 98333.33
         assertEquals(new BigDecimal("98333.33"), avgMap.get("101"));
 
-        // Manager 200 has 2 direct subordinates: 300, 301 → avg = (40000 + 55000)/2 = 47500.00
         assertEquals(new BigDecimal("47500.00"), avgMap.get("200"));
 
-        // Manager 102 has 1 subordinate: 103 → avg = 40000
         assertEquals(new BigDecimal("40000.00"), avgMap.get("102"));
 
-        // Manager 103 has 1 subordinate: 104 → avg = 38000
         assertEquals(new BigDecimal("38000.00"), avgMap.get("103"));
 
-        // Manager 104 has 1 subordinate: 105 → avg = 36000
         assertEquals(new BigDecimal("36000.00"), avgMap.get("104"));
 
-        // Manager 105 has 1 subordinate: 106 → avg = 34000
         assertEquals(new BigDecimal("34000.00"), avgMap.get("105"));
 
-        // Manager 300 has 1 subordinate: 400 → avg = 30000
         assertEquals(new BigDecimal("30000.00"), avgMap.get("300"));
 
         // Managers with no direct subordinates should not appear

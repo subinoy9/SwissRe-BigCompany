@@ -25,12 +25,12 @@ public class UnderpaidManagerAnalyzerTest {
                 // CEO
                 new Employee("100", "CEO", "Smith", new BigDecimal("200000"), null),
                 // Managers under CEO (set salaries below 1.2 × avg subordinates)
-                new Employee("101", "Alice", "Johnson", new BigDecimal("19000"), "100"), // underpaid
-                new Employee("102", "Bob", "Brown", new BigDecimal("17000"), "100"),     // underpaid
-                // Subordinates under Alice
+                new Employee("101", "Alice", "Johnson", new BigDecimal("19000"), "100"),
+                new Employee("102", "Bob", "Brown", new BigDecimal("17000"), "100"),
+
                 new Employee("103", "Charlie", "Davis", new BigDecimal("10000"), "101"),
                 new Employee("104", "Diana", "Miller", new BigDecimal("10000"), "101"),
-                // Subordinates under Bob
+
                 new Employee("105", "Evan", "Wilson", new BigDecimal("15000"), "102"),
                 new Employee("106", "Fiona", "Taylor", new BigDecimal("15000"), "102")
         );
@@ -43,10 +43,10 @@ public class UnderpaidManagerAnalyzerTest {
                 // Managers under CEO (set salaries above 1.2 × avg subordinates)
                 new Employee("101", "Alice", "Johnson", new BigDecimal("25000"), "100"),
                 new Employee("102", "Bob", "Brown", new BigDecimal("35000"), "100"),
-                // Subordinates under Alice
+
                 new Employee("103", "Charlie", "Davis", new BigDecimal("10000"), "101"),
                 new Employee("104", "Diana", "Miller", new BigDecimal("10000"), "101"),
-                // Subordinates under Bob
+
                 new Employee("105", "Evan", "Wilson", new BigDecimal("15000"), "102"),
                 new Employee("106", "Fiona", "Taylor", new BigDecimal("15000"), "102")
         );

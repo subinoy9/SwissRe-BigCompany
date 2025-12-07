@@ -147,7 +147,7 @@ public class OrgStructureApi {
         return Map.of("overpaidManagers", result);
     }
 
-    @GetMapping("/employees/long-reporting-lines")
+    @GetMapping("/employees/reporting-lines")
     public Map<String, Object> fetchLongReportingLines() {
 
         var tooLong = reportingAnalyzer.findEmployeesWithLongReportingLines(employees);

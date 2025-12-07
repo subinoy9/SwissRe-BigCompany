@@ -16,14 +16,13 @@ class OverpaidManagerAnalyzerTest {
 
     @BeforeEach
     void setUp() {
-        // Use real SubordinateSalaryCalculator with minimal logic
         SubordinateSalaryCalculator calculator = new SubordinateSalaryCalculator() {
             @Override
             public Map<String, BigDecimal> calculate(List<Employee> employees) {
                 // return controlled average salary per manager
                 return Map.of(
-                        "1", new BigDecimal("50000"),  // Manager 1
-                        "2", new BigDecimal("30000")   // Manager 2
+                        "1", new BigDecimal("50000"),
+                        "2", new BigDecimal("30000")
                 );
             }
         };
@@ -44,7 +43,6 @@ class OverpaidManagerAnalyzerTest {
         assertNotNull(overpaid);
         assertEquals(1, overpaid.size());
         assertTrue(overpaid.containsKey("1"));
-        // 50000*1.5 = 75000 → 200000-75000 = 125000
         assertEquals(new BigDecimal("125000.0"), overpaid.get("1"));
     }
 
